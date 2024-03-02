@@ -64,6 +64,10 @@ const ModalForm = () => {
     }
   };
 
+  const handleModalClick = (e) => {
+    e.stopPropagation(); 
+  };
+
   return (
     <div>
       <h2>User Details Modal</h2>
@@ -71,7 +75,7 @@ const ModalForm = () => {
 
       {isOpen && (
         <div className="modal" onClick={closeModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+          <div className="modal-content" onClick={handleModalClick}>
             <form onSubmit={handleSubmit}>
               <h3>Fill Details</h3>
               <label htmlFor="username">Username:</label>
