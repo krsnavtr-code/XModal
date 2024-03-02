@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import "./ModalForm.css";
 
 const ModalForm = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -65,17 +66,31 @@ const ModalForm = () => {
   };
 
   const handleModalClick = (e) => {
-    e.stopPropagation(); 
+    if (e.target.classList.contains("modal")) {
+      closeModal();
+    }
   };
 
+  useEffect(() => {
+    // Function to be called after the modal closes
+    const handleModalClose = () => {
+      // Your cleanup or additional logic after modal closes
+    };
+
+    // If the modal is closed, call the handleModalClose function
+    if (!isOpen) {
+      handleModalClose();
+    }
+  }, [isOpen]);
+
   return (
-    <div>
+    <div className="container">
       <h2>User Details Modal</h2>
       <button onClick={openModal}>Open Form</button>
 
       {isOpen && (
-        <div className="modal" onClick={closeModal}>
-          <div className="modal-content" onClick={handleModalClick}>
+        <div className="modal" onClick={handleModalClick}>
+          <div className="modal-content">
             <form onSubmit={handleSubmit}>
               <h3>Fill Details</h3>
               <label htmlFor="username">Username:</label>
