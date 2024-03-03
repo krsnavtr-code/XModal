@@ -83,8 +83,17 @@ const ModalForm = () => {
     }
   }, [isOpen]);
 
+  const [setFormVisible] = useState(false);
+  const makeFormVisible = () => {
+    setFormVisible(true);
+  };
+  const makeFormInVisible = () => {
+    setFormVisible(false);
+  };
   return (
     <div className="container">
+      <div className="formCloser" onClick={makeFormInVisible}></div>
+
       <h2>User Details Modal</h2>
       <button onClick={openModal}>Open Form</button>
 
