@@ -1,154 +1,105 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import "./ModalForm.css";
 
-const ModalForm = () => {
-  const [isOpen, setIsOpen] = useState(false);
+function ModalForm() {
   const [formData, setFormData] = useState({
-    email: "",
     username: "",
-    dob: "",
+    email: "",
     phone: "",
+    dob: "",
   });
-
-  const openModal = () => {
-    setIsOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsOpen(false);
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-
-    // Set custom validity for the email field
-    if (name === "email") {
-      const isValidEmail = value.includes("@");
-      const emailInput = e.target;
-
-      if (!isValidEmail) {
-        emailInput.setCustomValidity(
-          "Invalid email address. Please include the '@' symbol."
-        );
-      } else {
-        emailInput.setCustomValidity("");
-      }
-    }
-
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent the default form submission behavior
-
-    const { email, username, dob, phone } = formData;
-
-    if (email === "" || username === "" || dob === "" || phone === "") {
-      alert("Please fill in all fields.");
-    } else if (phone.length !== 10 || isNaN(phone)) {
-      alert("Invalid phone number. Please enter a 10-digit phone number.");
-    } else if (new Date(dob) >= new Date()) {
-      alert("Invalid date of birth. Date of birth cannot be in the future.");
-    } else {
-      alert("Form submitted successfully!");
-      closeModal();
-      // Reset form
-      setFormData({
-        email: "",
-        username: "",
-        dob: "",
-        phone: "",
-      });
-    }
-  };
-
-  const handleModalClick = (e) => {
-    if (e.target.classList.contains("modal")) {
-      closeModal();
-    }
-  };
-
-  useEffect(() => {
-    // Function to be called after the modal closes
-    const handleModalClose = () => {
-      // Your cleanup or additional logic after modal closes
-    };
-
-    // If the modal is closed, call the handleModalClose function
-    if (!isOpen) {
-      handleModalClose();
-    }
-  }, [isOpen]);
-
-  const [setFormVisible] = useState(false);
+  const [formVisible, setFormVisible] = useState(false);
   const makeFormVisible = () => {
     setFormVisible(true);
   };
   const makeFormInVisible = () => {
     setFormVisible(false);
   };
+  const formHandle = (e) => {
+    e.preventDefault();
+    if (e.target[2].value.length < 10) {
+      alert("Invalid phone number. Please enter a 10-digit phone number.");
+    } else if (new Date(e.target[3].value) > new Date()) {
+      alert("Invalid date of birth. Date of birth cannot be in the future.");
+    } else {
+      setFormData({
+        username: "",
+        email: "",
+        phone: "",
+        dob: "",
+      });
+    }
+  };
   return (
-    <div className="container">
+    <div>
       <div className="formCloser" onClick={makeFormInVisible}></div>
-
-      <h2>User Details Modal</h2>
-      <button onClick={openModal}>Open Form</button>
-
-      {isOpen && (
-        <div className="modal" onClick={handleModalClick}>
-          <div className="modal-content">
-            <form onSubmit={handleSubmit}>
+      <div className="container">
+        <h2>User Details Modal</h2>
+        <button className="buttonStyle" onClick={makeFormVisible}>
+          Open Form
+        </button>
+        {formVisible && (
+          <div className="modal">
+            <form onSubmit={formHandle}>
               <h3>Fill Details</h3>
               <label htmlFor="username">Username:</label>
               <input
-                type="text"
                 id="username"
-                name="username"
+                type="text"
                 value={formData.username}
-                onChange={handleInputChange}
-                required
+                onChange={(e) => {
+                  setFormData((prevState) => ({
+                    ...prevState,
+                    ["username"]: e.target.value,
+                  }));
+                }}
               />
-
               <label htmlFor="email">Email Address:</label>
               <input
-                type="text"
                 id="email"
-                name="email"
+                type="email"
                 value={formData.email}
-                onChange={handleInputChange}
+                onChange={(e) => {
+                  setFormData((prevState) => ({
+                    ...prevState,
+                    ["email"]: e.target.value,
+                  }));
+                }}
                 required
               />
-
               <label htmlFor="phone">Phone Number:</label>
               <input
-                type="text"
                 id="phone"
-                name="phone"
+                type="number"
                 value={formData.phone}
-                onChange={handleInputChange}
+                onChange={(e) => {
+                  setFormData((prevState) => ({
+                    ...prevState,
+                    ["phone"]: e.target.value,
+                  }));
+                }}
+                required
               />
-
               <label htmlFor="dob">Date of Birth:</label>
               <input
-                type="date"
                 id="dob"
-                name="dob"
+                type="date"
                 value={formData.dob}
-                onChange={handleInputChange}
+                onChange={(e) => {
+                  setFormData((prevState) => ({
+                    ...prevState,
+                    ["dob"]: e.target.value,
+                  }));
+                }}
+                required
               />
-
-              <button type="submit" className="submit-button">
-                Submit
-              </button>
+              <button type="submit">Submit</button>
             </form>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
-};
+}
 
 export default ModalForm;

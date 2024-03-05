@@ -26,7 +26,9 @@ button {
   color: #fff;
   transition: background-color 0.3s ease;
 }
-
+.modal {
+  margin-top: 20px;
+}
 form {
   display: flex;
   flex-direction: column;
@@ -39,6 +41,7 @@ form {
 }
 
 h3 {
+  text-align: center;
   margin-bottom: 10px;
   font-size: 20px;
   color: #333;
